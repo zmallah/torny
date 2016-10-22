@@ -1,9 +1,12 @@
 version: '2'
 services:
  db:
-   image: postgres
+   image: mariadb
+   environment:
+     - MYSQL_ROOT_PASSWORD=thisistorny
+     - MYSQL_DATABASE=torny
    ports:
-    - "5432:5432"
+    - "3306:3306"
  web:
    build: .
    command: python manage.py runserver 0.0.0.0:8000
