@@ -35,22 +35,22 @@ class RegisterUser(APIView):
 
     def post(self, request):
         user = User.objects.create_user(
-                request.data['user'],
-                request.data['email'],
-                request.data['pass']
-                )
+            request.data['user'],
+            request.data['email'],
+            request.data['pass']
+        )
 
         profile = Profile(
-                user = user,
-                username = request.data['user'],
-                usfa_id = request.data['usfa'],
-                date_of_birth = request.data['dob'],
-                foil_rating = request.data['rfoil'],
-                saber_rating = request.data['rsaber'],
-                epee_rating = request.data['repee'],
-                foil_director_rating = request.data['dfoil'],
-                saber_director_rating = request.data['dsaber'],
-                epee_director_rating = request.data['depee'])
+            user=user,
+            username=request.data['user'],
+            usfa_id=request.data['usfa'],
+            date_of_birth=request.data['dob'],
+            foil_rating=request.data['rfoil'],
+            saber_rating=request.data['rsaber'],
+            epee_rating=request.data['repee'],
+            foil_director_rating=request.data['dfoil'],
+            saber_director_rating=request.data['dsaber'],
+            epee_director_rating=request.data['depee'])
         profile.save()
 
         # TODO: Authenticate Data before storing
@@ -83,7 +83,11 @@ class RegisterUserInTournament(APIView):
         user_id = request.data['user_id'] or request.user.id
         profile = Profile.objects.get(user=user_id)
 
+<<<<<<< d979b5e812768c142ad9bbc31cd9a6c35c69f228
         registration = UserInTournament(
+=======
+        registration = RegisterUserInTournament(
+>>>>>>> created some seeding
             tournament=request.data['tournament_id'],
             user=profile.id,
             role=request.data['role'],
