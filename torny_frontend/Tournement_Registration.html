@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Tournement Creation</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Tournement Creation</h2>
+  <form id = "mainForm">
+    <div class="form-group">
+      <label for="Tour_name">Tournement Name:</label>
+      <input type="text" class="form-control" id="Tour_name" email">
+    </div>
+    <div class="form-group">
+      <label for="Location">Location</label>
+      <input type="text" class="form-control" id="Location" email">
+    </div>
+    <div class="form-group" id = "weaponForm">
+      <label>Weapon</label><br>
+      	<div class="form-check">
+      		<label class="form-check-label">
+        		<input type="radio" class="form-check-input" name="weaponSelect" id="foilSelect" value="Foil" checked>
+        		Foil
+      		</label>
+    	</div>
+    	<div class="form-check">
+    		<label class="form-check-label">
+ 	    		<input type="radio" class="form-check-input" name="weaponSelect" id="sabreSelect" value="Sabre">
+        		Sabre
+      		</label>
+    	</div>
+    	<div class="form-check">
+    		<label class="form-check-label">
+        		<input type="radio" class="form-check-input" name="weaponSelect" id="eepeeSelect" value="Eepee">
+        		Eepee
+      		</label>
+    	</div>
+    </div>
+	<div class="form-group" id = "ageForm">
+      <label>Age Group</label><br>
+      	<div class="form-check">
+      		<label class="form-check-label">
+        		<input type="radio" class="form-check-input" name="ageSelect" value="Y10" checked>
+        		Y10
+      		</label>
+			<label class="form-check-label">
+ 	    		<input type="radio" class="form-check-input" name="ageSelect" value ="Y12">
+        		Y12
+      		</label>
+      	</div>	
+    	<div class="form-check">
+    		<label class="form-check-label">
+        		<input type="radio" class="form-check-input" name="ageSelect" value="Y14">
+        		Y14
+      		</label>
+      		<label class="form-check-label">
+        		<input type="radio" class="form-check-input" name="ageSelect" value="CDT">
+        		CDT
+      		</label>
+    	</div>
+    	<div class="form-check">
+    		<label class="form-check-label">
+        		<input type="radio" class="form-check-input" name="ageSelect" value="JR">
+        		JR
+      		</label>&ensp;
+      		<label class="form-check-label">
+        		<input type="radio" class="form-check-input" name="ageSelect" value="V70">
+        		V70
+      		</label>
+    	</div>
+    	<div class="form-check">
+    		<label class="form-check-label">
+        		<input type="radio" class="form-check-input" name="ageSelect" value="V60">
+        		V60
+      		</label>
+      		<label class="form-check-label">
+        		<input type="radio" class="form-check-input" name="ageSelect" value="V50">
+        		V50
+      		</label>
+    	</div>
+    	<div class="form-check">
+    		<label class="form-check-label">
+        		<input type="radio" class="form-check-input" name="ageSelect" value="V40">
+        		V40
+      		</label>
+      		<label class="form-check-label">
+        		<input type="radio" class="form-check-input" name="ageSelect" value="Senior">
+        		Senior
+      		</label>
+    	</div>
+    </div>
+	<button type="button" class="btn btn-default" id = "submitForm">Create</button>
+  </form>
+</div>
+</body>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	
+});
+$('#submitForm').click(function(){
+	$.post("",
+		{
+			name : $('Tour_name').text(),
+			weapon : $("#weaponForm input[type='radio']:checked").val(),
+			weapon : $("#ageForm input[type='radio']:checked").val(),
+		},
+		function(data){
+			alert(data);
+	});
+});
+</script>
+
+</html>
+

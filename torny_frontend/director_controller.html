@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Director Controller</title>
+	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="control-group">
+	<table>
+		<thead>
+		<tr>
+			<td><label id = "folName"></label></td>
+			<td></td>
+			<td><label id = "forName"></label></td>
+		</tr>
+		<tr>
+			<td style="font-size: 100px; text-align: center;"> <label id = "folScore">0</label></td>
+			<td></td>
+			<td style="font-size: 100px;text-align: center;"><label id = "forScore">0</label></td>
+		</tr>
+			
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<input id = "foladd" type="button" class = "btn btn-primary" value="+" style="padding: 10px 50px 10px 50px;">
+				</td>
+				<td style="padding: 50px;"></td>
+				<td>
+					<input id = "foradd" type="button" class = "btn btn-primary" value="+" style="padding: 10px 50px 10px 50px;">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input id = "folminus" type="button" class="btn btn-primary" value="-" style="padding: 10px 50px 10px 50px;">
+				</td>
+				<td style="padding: 50px;"></td>
+				<td>
+					<input id = "forminus" type="button" class="btn btn-primary" value="-" style="padding: 10px 50px 10px 50px;">
+				</td>
+			</tr>
+			<tr>
+				<td class = "dropdown">
+					<select class="selectpicker" data-style="btn-primary">
+						<option></option>
+						<option>Yellow Card</option>
+						<option>Red Card</option>
+						<option>Black Card</option>
+					</select>
+				</td>
+				<td style="padding: 50px;"></td>
+				<td>
+					<select class="selectpicker" data-style="btn-primary" id = "forCards">
+						<option></option>
+						<option>Yellow Card</option>
+						<option>Red Card</option>
+						<option>Black Card</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<input type="button" id = "boutOver" style = "width: 100%; height: 100%;" value = "Bout Over"></input>
+				</td>
+			</tr>
+		</tbody>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$.get('/nextbout/',function(data){
+
+				});
+			});
+			// $('#forCards').change(function(){
+				
+			// });
+			$("#foladd").click(function(){
+				score = parseInt($("#folScore").text())+1;
+				$("#folScore").text(score);
+				$.post('/event',{
+					fencer_left_score : $("#folScore").text()
+				},function(data){
+					alert(data);
+				});
+			});
+			$("#foradd").click(function(){
+				score = parseInt($("#forScore").text())+1;
+				$("#forScore").text(score);
+				$.post('/event',{
+					fencer_right_score : $("#forScore").text()
+				},function(data){
+					alert(data);
+				});
+			});
+			$("#folminus").click(function(){
+				score = parseInt($("#folScore").text())-1;
+				$("#folScore").text(score);
+				$.post('/event',{
+					fencer_left_score : $("#folScore").text()
+				},function(data){
+					alert(data);
+				});
+			});
+			$("#forminus").click(function(){
+				score = parseInt($("#forScore").text())-1;
+				$("#forScore").text(score);
+				$.post('/event',{
+					fencer_right_score : $("#forScore").text()
+				},function(data){
+					alert(data);
+				});
+			});
+			$("#boutOver").click(function(){
+				$.post('/event',{
+					fencer_left_score : $("#folScore").text(),
+					fencer_right_score : $("#forScore").text()
+				},function(data){
+					alert(data);
+				});
+			});
+		</script>
+
+	</table>
+</body>
+</html>
