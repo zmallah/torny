@@ -21,4 +21,6 @@ from . import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^create_tournament/$', csrf_exempt(views.CreateTournament.as_view())),
+    url(r'^tournaments/$', csrf_exempt(views.Tournaments.as_view())),
+    url(r'^tournaments/(?P<id>[0-9]+)/$', csrf_exempt(views.Tournaments.as_view())),
 ]
