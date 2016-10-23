@@ -51,6 +51,7 @@ class RegisterUser(APIView):
             foil_director_rating=request.data['dfoil'],
             saber_director_rating=request.data['dsaber'],
             epee_director_rating=request.data['depee'])
+
         profile.save()
 
         # TODO: Authenticate Data before storing
@@ -83,11 +84,8 @@ class RegisterUserInTournament(APIView):
         user_id = request.data['user_id'] or request.user.id
         profile = Profile.objects.get(user=user_id)
 
-<<<<<<< d979b5e812768c142ad9bbc31cd9a6c35c69f228
         registration = UserInTournament(
-=======
-        registration = RegisterUserInTournament(
->>>>>>> created some seeding
+
             tournament=request.data['tournament_id'],
             user=profile.id,
             role=request.data['role'],
