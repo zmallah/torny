@@ -132,6 +132,22 @@ class Seeding(APIView):
 
         return Response('Success')
 
+class CreateTourn(APIView):
+    """
+    Create Tournmanet
+    """
+
+    def post(self, request):
+        tourn = Tournament(
+                name = request.data['tournName'],
+                date = request.data['date'],
+                weapon = request.data['weaponSelect'],
+                event_type = request.data['eventType'],
+                location = request.data['location'])
+        tourn.save()
+
+        return Response('success')
+
 
 class ListUsers(APIView):
     """
