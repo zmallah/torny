@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
+    username = models.CharField(max_length=64)
     usfa_id = models.CharField(max_length=64)
     date_of_birth = models.DateField()
     foil_rating = models.CharField(max_length=5)
@@ -15,7 +17,7 @@ class Profile(models.Model):
 
 
 class Role(models.Model):
-    role_type = models.CharField(max_length=64)
+    role = models.CharField(max_length=64)
 
 
 class Tournament(models.Model):
@@ -32,16 +34,7 @@ class UserInTournament(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     role = models.ForeignKey(Role, on_delete=models.CASCADE)
     status = models.BooleanField()
-    date_registration = models.DateField()
-
-
-class Bout(models.Model):
-    fencer_left = models.ForeignKey(User, on_delete=models.CASCADE,
-                                    related_name='%(class)s_fence_left')
-    fencer_right = models.ForeignKey(User, on_delete=models.CASCADE,
-                                     related_name='%(class)s_fence_right')
-    fencer_right_score = models.IntegerField()
-    fencer_left_score = models.IntegerField()
+    date_registration = models.DateField(default=timezone.now)
 
 
 class Pool(models.Model):
@@ -49,4 +42,28 @@ class Pool(models.Model):
                                      related_name='%(class)s_fence_pool')
     director = models.ManyToManyField(User,
                                       related_name='%(class)s_dir_pool')
-    bouts = models.ManyToManyField(Bout)
+    tournament = models.ForeignKey(Tournament)
+
+
+class Bout(models.Model):
+    pool = models.ForeignKey(Pool)
+    fencer_left = models.ForeignKey(User, on_delete=models.CASCADE,
+                                    related_name='%(class)s_fence_left')
+    fencer_right = models.ForeignKey(User, on_delete=models.CASCADE,
+                                     related_name='%(class)s_fence_right')
+    fencer_left_score = models.IntegerField()
+    fencer_right_score = models.IntegerField()
+    completed = models.BooleanField(default=False)
+
+
+class Event(models.Model):
+    event_type = models.CharField(max_length=64)
+
+
+class EventLog(models.Model):
+    bout = models.ForeignKey(Bout)
+    event_type = models.ForeignKey(Event)
+    fencer = models.ForeignKey(User, on_delete=models.CASCADE,
+                               related_name='%(class)s_fencer')
+    fencer_left_score = models.IntegerField()
+    fencer_right_score = models.IntegerField()
