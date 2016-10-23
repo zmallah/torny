@@ -8,12 +8,36 @@
 
     <body>
         <h1>Register</h1>
-        <form class="user-form" method="POST">
-            <label for="inpEmail">Email:</label>
-            <input type="text" name="email" id="inpEmail" class="form-control" placeholder="Email" />
-
+        <form class="user-form" method="POST" action="/register/">
             <label for="inpUser">Username:</label>
             <input type="text" name="user" id="inpUser" class="form-control" placeholder="Username" />
+
+            <label for="inpEmail">Email:</label>
+            <input type="email" name="email" id="inpEmail" class="form-control" placeholder="Email" />
+
+            <label for="inpUser">USFA Fencing Number:</label>
+            <input type="text" name="usfa" class="form-control" placeholder="(ex: 100123456)" />
+
+            <label for="inpUser">Date of Birth:</label>
+            <input type="date" name="dob" class="form-control" />
+
+            <label for="inpUser">Foil Fencing Rating:</label>
+            <input type="text" name="rfoil" class="form-control" placeholder="Foil Fencing Rating" />
+
+            <label for="inpUser">Epee Fencing Rating</label>
+            <input type="text" name="repee" class="form-control" placeholder="Epee Fencing Rating" />
+
+            <label for="inpUser">Saber Fencing Rating</label>
+            <input type="text" name="rsaber" class="form-control" placeholder="Epee Fencing Rating" />
+
+            <label for="inpUser">Foil Director Rating:</label>
+            <input type="text" name="dfoil" class="form-control" placeholder="Foil Director Rating" />
+
+            <label for="inpUser">Epee Director Rating</label>
+            <input type="text" name="depee" class="form-control" placeholder="Epee Director Rating" />
+
+            <label for="inpUser">Saber Director Rating</label>
+            <input type="text" name="dsaber" class="form-control" placeholder="Saber Director Rating" />
 
             <label for="inpPass">Password:</label>
             <input type="password" name="pass" id="inpPass" class="form-control" placeholder="Password" />

@@ -12,10 +12,10 @@
 
 <div class="container">
   <h2>Tournement Creation</h2>
-  <form>
+  <form method="post" action="/CreateTourn/">
     <div class="form-group">
       <label for="Tournement Name">Tournement Name:</label>
-      <input type="text" class="form-control" id="Tournement Name" email">
+      <input type="text" class="form-control" name="tournName">
     </div>
     <div class="form-group">
       <label>Weapon</label><br>
@@ -42,55 +42,70 @@
       <label>Age Group</label><br>
       	<div class="form-check">
       		<label class="form-check-label">
-        		<input type="radio"  name="weaponSelect" id="foilSelect" value="foilSelect" checked>
+        		<input type="radio"  name="ageSelect" id="foilSelect" value="foilSelect" checked>
         		Y10
       		</label>
 			<label class="form-check-label">
- 	    		<input type="radio" class="form-check-input" name="weaponSelect" id="sabreSelect" value="sabreSelect">
+ 	    		<input type="radio" class="form-check-input" name="ageSelect" id="sabreSelect" value="sabreSelect">
         		Y12
       		</label>
       	</div>	
     	<div class="form-check">
     		<label class="form-check-label">
-        		<input type="radio" class="form-check-input" name="weaponSelect" id="eepeeSelect" value="eepeeSelect">
+        		<input type="radio" class="form-check-input" name="ageSelect" id="eepeeSelect" value="eepeeSelect">
         		Y14
       		</label>
       		<label class="form-check-label">
-        		<input type="radio" class="form-check-input" name="weaponSelect" id="eepeeSelect" value="eepeeSelect">
+        		<input type="radio" class="form-check-input" name="ageSelect" id="eepeeSelect" value="eepeeSelect">
         		CDT
       		</label>
     	</div>
     	<div class="form-check">
     		<label class="form-check-label">
-        		<input type="radio" class="form-check-input" name="weaponSelect" id="eepeeSelect" value="eepeeSelect">
+        		<input type="radio" class="form-check-input" name="ageSelect" id="eepeeSelect" value="eepeeSelect">
         		JR
       		</label>&ensp;
       		<label class="form-check-label">
-        		<input type="radio" class="form-check-input" name="weaponSelect" id="eepeeSelect" value="eepeeSelect">
+        		<input type="radio" class="form-check-input" name="ageSelect" id="eepeeSelect" value="eepeeSelect">
         		V70
       		</label>
     	</div>
     	<div class="form-check">
     		<label class="form-check-label">
-        		<input type="radio" class="form-check-input" name="weaponSelect" id="eepeeSelect" value="eepeeSelect">
+        		<input type="radio" class="form-check-input" name="ageSelect" id="eepeeSelect" value="eepeeSelect">
         		V60
       		</label>
       		<label class="form-check-label">
-        		<input type="radio" class="form-check-input" name="weaponSelect" id="eepeeSelect" value="eepeeSelect">
+        		<input type="radio" class="form-check-input" name="ageSelect" id="eepeeSelect" value="eepeeSelect">
         		V50
       		</label>
     	</div>
     	<div class="form-check">
     		<label class="form-check-label">
-        		<input type="radio" class="form-check-input" name="weaponSelect" id="eepeeSelect" value="eepeeSelect">
+        		<input type="radio" class="form-check-input" name="ageSelect" id="eepeeSelect" value="eepeeSelect">
         		V40
       		</label>
       		<label class="form-check-label">
-        		<input type="radio" class="form-check-input" name="weaponSelect" id="eepeeSelect" value="eepeeSelect">
+        		<input type="radio" class="form-check-input" name="ageSelect" id="eepeeSelect" value="eepeeSelect">
         		Senior
       		</label>
     	</div>
     </div>
+    <div>
+        <label class="form-check-label" for="date">Date:</label>
+        <input type="date" name="date" />
+    </div>
+    
+    <div>
+        <label class="form-check-label" for="eventType">Event Type:</label>
+        <input type="text" name="eventType" />
+    </div>
+
+    <div>
+        <label class="form-check-label" for="location">Location:</label>
+        <input type="text" name="location" />
+    </div>
+
     <button type="submit" class="btn btn-default">Create</button>
   </form>
 </div>
