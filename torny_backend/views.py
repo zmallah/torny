@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from .models import Profile, Tournament, UserInTournament, Pool
+from .models import User, Tournament, UserInTournament, Profile, Pool
 from rest_framework.response import Response
 from django.core import serializers
 import json
@@ -83,7 +83,7 @@ class RegisterUserInTournament(APIView):
         user_id = request.data['user_id'] or request.user.id
         profile = Profile.objects.get(user=user_id)
 
-        registration = RegisterUserInTournament(
+        registration = UserInTournament(
             tournament=request.data['tournament_id'],
             user=profile.id,
             role=request.data['role'],
