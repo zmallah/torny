@@ -25,6 +25,18 @@ class CreateTournament(APIView):
         return Response(data.id)
 
 
+class RegisterUser(APIView):
+
+    def post(self, request):
+        return Response()
+
+
+class AuthenticateUser(APIView):
+
+    def post(self, request):
+        return Response()
+
+
 class Tournaments(APIView):
 
     def get(self, request, id=None):
@@ -32,7 +44,7 @@ class Tournaments(APIView):
         creates a tournament with the given information
         """
         if id:
-            data = serializers.serialize("json", [Tournament.objects.get(id=id), ])
+            data = serializers.serialize("json", [Tournament.objects.get(id=id)])
             struct = json.loads(data)
             data = json.dumps(struct[0])
         else:
