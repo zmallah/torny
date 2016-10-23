@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from .models import User, Tournament, UserInTournament, Profile, Pool, Event, EventLog
+from .models import User, Tournament, UserInTournament, Profile, Pool, Event, EventLog, Role
 from rest_framework.response import Response
 from django.core import serializers
 from django.contrib.auth import authenticate
@@ -93,16 +93,15 @@ class RegisterUserInTournament(APIView):
 
     def post(self, request):
         user_id = request.data['user_id'] or request.user.id
-        profile = Profile.objects.get(user=user_id)
 
         registration = UserInTournament(
-
-            tournament=request.data['tournament_id'],
-            user=profile.id,
-            role=request.data['role'],
-            status=request.data['status']
+            tournament=Tournament.objects.get(id=request.data['tournament_id']),
+            user=User.objects.get(id=user_id),
+            role=Role.objects.get(id=request.data['role']),
+            status=True
         )
 
+        registration.save()
         return Response(serialize_model(registration))
 
 
@@ -136,6 +135,7 @@ class Seeding(APIView):
                 pool_count = pool_count + 1
             else:
                 pool_count = 0
+            pools[pool_count].save()
 
         data = serializers.serialize("json", pools)
         return Response(data)
@@ -199,3 +199,9 @@ class LogEvent(APIView):
         elif event.event_type.event_type == 'bout_over':
             bout.completed = True
         event.save
+
+
+class NextBout(APIView):
+
+    def post(self, request):
+        return Pool.objects.get(request.data['pool_id']).bouts.filter(completed=0)
