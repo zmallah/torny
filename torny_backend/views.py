@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from .models import User, Tournament, UserInTournament, Profile
 from rest_framework.response import Response
 from django.core import serializers
+from django.contrib.auth import authenticate
 import json
 
 
@@ -33,7 +34,8 @@ class RegisterUser(APIView):
         user = User.objects.create_user(
                 request.data['user'],
                 request.data['email'],
-                request.data['pass']
+                request.data['pass'],
+                is_staff = True
                 )
 
         profile = Profile(
@@ -57,7 +59,13 @@ class RegisterUser(APIView):
 class AuthenticateUser(APIView):
 
     def post(self, request):
-        return Response()
+        user = authenticate(
+                username=request.data['user'],
+                password=request.data['pass'])
+        if user is None:
+            return Response("Bad Username or Password")
+
+        return Response("success")
 
 
 class Tournaments(APIView):
