@@ -26,5 +26,7 @@ urlpatterns = [
     url(r'^register/$', csrf_exempt(views.RegisterUser.as_view())),
     url(r'^login/$', csrf_exempt(views.AuthenticateUser.as_view())),
     url(r'^tournament_signup/$', csrf_exempt(views.Tournaments.as_view())),
-    url(r'^seeding/$', csrf_exempt(views.Seeding.as_view()))
+    url(r'^seeding/$', csrf_exempt(views.Seeding.as_view())),
+    url(r'^CreateTourn/$', csrf_exempt(views.CreateTourn.as_view())),
+    url(r'^ListTourns/$', csrf_exempt(views.ListTourns.as_view()))
 ]
