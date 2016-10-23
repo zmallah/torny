@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Tournement Creation</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Sign Up For Tournament</h2>
+  <form method="post" action="/tournament_signup/">
+      <input type="hidden" name="user_id" value="1" />
+    <div class="form-group">
+      <label for="user_id">Tournament ID:</label>
+      <input type="text" class="form-control" name="tournament_id">
+    </div>
+    <div class="form-group">
+      <label for="role">Role:</label>
+      <input type="text" class="form-control" name="role">
+    </div>
+    <div class="form-group">
+      <label for="status">Status:</label>
+      <input type="text" class="form-control" name="status">
+    </div>
+    <button type="submit" class="btn btn-default">Join</button>
+  </form>
+</div>
+</body>
+</html>
