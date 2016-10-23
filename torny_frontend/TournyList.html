@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html>
+  <head>
+   <title>Bootstrap Example</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   </head>
+     <body>
+       <h2>Tournament List</h2>
+         <form method="get" action="file:///home/nicky/Torny/MoreInfo.html">
+
+         <table border="1" width="100%" id="tourname-list-table">
+
+           
+
+           </table>
+         </form>
+
+     </body>
+<script type="text/javascript">
+  $('#MoreInfo').click(function(){
+  	$.post("file:///home/nicky/Torny/MoreInfo.html",
+  	{
+       
+  	},
+  	function(data){});
+    });
+
+  $(document).ready(function(){
+  	
+  /*
+	[{
+		name: String,
+		isRegistered: boolean
+	}]
+  */
+
+  var tournaments = [];
+  for (var i = 0; i < tournaments.length; i++) {
+  	var opBtn = (tournaments[i].isRegistered) ? '<button type="button" class="withdraw-btn">Withdraw</button>' : '<button type="button" class="register-btn">Register</button>';
+  	$('#tourname-list-table').append('<tr><td>' + tournaments[i].name + '</td><td>' + opBtn + '</td></tr>');
+  }
+
+  });
+</script>
+
+
+</html>
