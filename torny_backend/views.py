@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from .models import User, Tournament, UserInTournament
+from .models import User, Tournament, UserInTournament, Profile
 from rest_framework.response import Response
 from django.core import serializers
 import json
@@ -25,9 +25,33 @@ class CreateTournament(APIView):
 
 
 class RegisterUser(APIView):
+    """
+    creates a new user and corresponding profile
+    """
 
     def post(self, request):
-        return Response()
+        user = User.objects.create_user(
+                request.data['user'],
+                request.data['email'],
+                request.data['pass']
+                )
+
+        profile = Profile(
+                user = user,
+                username = request.data['user'],
+                usfa_id = request.data['usfa'],
+                date_of_birth = request.data['dob'],
+                foil_rating = request.data['rfoil'],
+                saber_rating = request.data['rsaber'],
+                epee_rating = request.data['repee'],
+                foil_director_rating = request.data['dfoil'],
+                saber_director_rating = request.data['dsaber'],
+                epee_director_rating = request.data['depee'])
+        profile.save()
+
+        # TODO: Authenticate Data before storing
+
+        return Response("{\"result\":\"success\"}")
 
 
 class AuthenticateUser(APIView):
