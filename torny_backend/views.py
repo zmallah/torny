@@ -193,12 +193,12 @@ class LogEvent(APIView):
             else:
                 bout.fencer_right_score = bout.fencer_right_score + 1
 
-            bout.save
+            bout.save()
             event.fencer_left_score = bout.fencer_left_score
             event.fencer_right_score = bout.fencer_right_score
         elif event.event_type.event_type == 'bout_over':
             bout.completed = True
-        event.save
+        event.save()
 
 
 class NextBout(APIView):
