@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -38,9 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'torny_backend',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,6 +53,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+CSRF_COOKIE_SECURE = False
 ROOT_URLCONF = 'torny_backend.urls'
 
 TEMPLATES = [
@@ -73,14 +78,19 @@ WSGI_APPLICATION = 'torny_backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
+SQL_DB_NAME = os.environ.get('SQL_DB_NAME', 'torny')
+SQL_USER = os.environ.get('SQL_USER', 'root')
+SQL_PASSWORD = os.environ.get('SQL_PASSWORD', 'thisistorny')
+SQL_HOST = os.environ.get('SQL_HOST', 'localhost')
+
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'torny',
-        'USER': 'root',
-        'PASSWORD': 'thisistorny',
-        'HOST': 'db',
+        'NAME': SQL_DB_NAME,
+        'USER': SQL_USER,
+        'PASSWORD': SQL_PASSWORD,
+        'HOST': SQL_HOST,
         'PORT': 3306,
     }
 }

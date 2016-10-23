@@ -16,3 +16,8 @@ services:
      - "8000:8000"
    depends_on:
      - db
+   environment:
+     - SQL_HOST=db
+     - SQL_DB_NAME=torny
+     - SQL_USER=root
+     - SQL_PASSWORD=thisistorny
