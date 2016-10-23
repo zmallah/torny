@@ -4,3 +4,4 @@ djangorestframework==3.5.1
 Markdown==2.6.7
 psycopg2
 pymysql
+django-cors-headers
