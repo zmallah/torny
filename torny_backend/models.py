@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
+    username = models.CharField(max_length=64)
     usfa_id = models.CharField(max_length=64)
     date_of_birth = models.DateField()
     foil_rating = models.CharField(max_length=5)

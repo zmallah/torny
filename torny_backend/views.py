@@ -1,10 +1,12 @@
 from rest_framework.views import APIView
-from rest_framework.response import Response
 from .models import User, Tournament, UserInTournament
+from rest_framework.response import Response
+from .renderers import JSONRenderer
+from django.core import serializers
+import json
+
 
 # from datetime import datetime
-
-
 class CreateTournament(APIView):
 
     def post(self, request):
@@ -15,7 +17,27 @@ class CreateTournament(APIView):
                                 date=request.data['date'],
                                 weapon=request.data['weapon'])
         tournament.save()
-        return Response(tournament.id)
+
+        data = serializers.serialize("json", [tournament, ])
+        struct = json.loads(data)
+        data = json.dumps(struct[0])
+
+        return Response(data.id)
+
+
+class Tournaments(APIView):
+
+    def get(self, request, id=None):
+        """
+        creates a tournament with the given information
+        """
+        if id:
+            data = serializers.serialize("json", [Tournament.objects.get(id=id), ])
+            struct = json.loads(data)
+            data = json.dumps(struct[0])
+        else:
+            data = serializers.serialize("json", Tournament.objects.all())
+        return Response(data)
 
 
 class ListUsers(APIView):
@@ -27,5 +49,5 @@ class ListUsers(APIView):
         """
         Return a list of all users.
         """
-        usernames = [user.username for user in User.objects.all()]
-        return Response(usernames)
+        # usernames = [user.username for user in User.objects.all()]
+        # return Response(usernames)
