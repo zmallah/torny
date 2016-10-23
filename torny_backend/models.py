@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import datetime
+from django.utils import timezone
 
 
 class Profile(models.Model):
@@ -34,7 +34,7 @@ class UserInTournament(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     role = models.ForeignKey(Role, on_delete=models.CASCADE)
     status = models.BooleanField()
-    date_registration = models.DateField(default=datetime.now())
+    date_registration = models.DateField(default=timezone.now)
 
 
 class Pool(models.Model):
