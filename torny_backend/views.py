@@ -20,7 +20,7 @@ class CreateTournament(APIView):
         creates a tournament with the given information
         """
         tournament = Tournament(name=request.data['name'],
-                                date=request.data['date'],
+                                # date=request.data['date'],
                                 weapon=request.data['weapon'],
                                 event_type=request.data['event_type'],
                                 location=request.data['location']
