@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 
 class Profile(models.Model):
@@ -33,16 +34,7 @@ class UserInTournament(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     role = models.ForeignKey(Role, on_delete=models.CASCADE)
     status = models.BooleanField()
-    date_registration = models.DateField()
-
-
-class Bout(models.Model):
-    fencer_left = models.ForeignKey(User, on_delete=models.CASCADE,
-                                    related_name='%(class)s_fence_left')
-    fencer_right = models.ForeignKey(User, on_delete=models.CASCADE,
-                                     related_name='%(class)s_fence_right')
-    fencer_right_score = models.IntegerField()
-    fencer_left_score = models.IntegerField()
+    date_registration = models.DateField(default=datetime.now())
 
 
 class Pool(models.Model):
@@ -50,4 +42,14 @@ class Pool(models.Model):
                                      related_name='%(class)s_fence_pool')
     director = models.ManyToManyField(User,
                                       related_name='%(class)s_dir_pool')
-    bouts = models.ManyToManyField(Bout)
+    tournament = models.ForeignKey(Tournament)
+
+
+class Bout(models.Model):
+    pool = models.ForeignKey(Pool)
+    fencer_left = models.ForeignKey(User, on_delete=models.CASCADE,
+                                    related_name='%(class)s_fence_left')
+    fencer_right = models.ForeignKey(User, on_delete=models.CASCADE,
+                                     related_name='%(class)s_fence_right')
+    fencer_right_score = models.IntegerField()
+    fencer_left_score = models.IntegerField()
