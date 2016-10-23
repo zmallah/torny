@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from .models import User, Tournament, UserInTournament, Profile, Pool
+from .models import User, Tournament, UserInTournament, Profile, Pool, Event, EventLog
 from rest_framework.response import Response
 from django.core import serializers
 from django.contrib.auth import authenticate
@@ -21,7 +21,10 @@ class CreateTournament(APIView):
         """
         tournament = Tournament(name=request.data['name'],
                                 date=request.data['date'],
-                                weapon=request.data['weapon'])
+                                weapon=request.data['weapon'],
+                                event_type=request.data['event_type'],
+                                location=request.data['location']
+                                )
         tournament.save()
 
         data = serialize_model(tournament)
@@ -36,10 +39,10 @@ class RegisterUser(APIView):
 
     def post(self, request):
         user = User.objects.create_user(
-                request.data['user'],
-                request.data['email'],
-                request.data['pass'],
-                )
+            request.data['user'],
+            request.data['email'],
+            request.data['pass'],
+        )
 
         profile = Profile(
             user=user,
@@ -64,8 +67,9 @@ class AuthenticateUser(APIView):
 
     def post(self, request):
         user = authenticate(
-                username=request.data['user'],
-                password=request.data['pass'])
+            username=request.data['user'],
+            password=request.data['pass']
+        )
         if user is None:
             return Response("Bad Username or Password")
 
@@ -108,29 +112,34 @@ class Seeding(APIView):
         tournament = Tournament.objects.get(id=request.data['tournament_id'])
         if tournament.weapon == 'foil':
             rating = 'foil_rating'
-            d_rating = 'foil_director_rating'
         elif tournament.weapon == 'saber':
             rating = 'saber_rating'
-            d_rating = 'saber_director_rating'
         elif tournament.weapon == 'epee':
             rating = 'epee_rating'
-            d_rating = 'epee_director_rating'
 
         fencers = tournament.users.objects.filter(role=1).order_by(rating)
-        directors = tournament.users.objects.filter(role=2).order_by(d_rating)
+        directors = tournament.users.objects.filter(role=2)
 
-        fencers_count = fencers.count()
         directors_count = directors.count()
-        pool_size = fencers_count / directors_count
-        top = 0
-        for director in directors:
-            fencers_in_pool = fencers[top:top + pool_size]
-            top = top + pool_size
-            pool = Pool(tournament=tournament.id, director=director.id,
-                        fencers=fencers_in_pool)
-            pool.save()
 
-        return Response('Success')
+        pools = list()
+        pool_count = 0
+        for director in directors:
+            pools[pool_count] = Pool(tournament=tournament.id,
+                                     director=director.id)
+            pool_count = pool_count + 1
+
+        pool_count = 0
+        for fencer in fencers:
+            pools[pool_count].fencers.add(fencer)
+            if pool_count != directors_count:
+                pool_count = pool_count + 1
+            else:
+                pool_count = 0
+
+        data = serializers.serialize("json", pools)
+        return Response(data)
+
 
 class CreateTourn(APIView):
     """
@@ -139,27 +148,16 @@ class CreateTourn(APIView):
 
     def post(self, request):
         tourn = Tournament(
-                name = request.data['tournName'],
-                date = request.data['date'],
-                weapon = request.data['weaponSelect'],
-                event_type = request.data['eventType'],
-                location = request.data['location'])
+            name=request.data['tournName'],
+            date=request.data['date'],
+            weapon=request.data['weaponSelect'],
+            event_type=request.data['eventType'],
+            location=request.data['location']
+        )
         tourn.save()
 
         return Response('success')
 
-
-class ListUsers(APIView):
-    """
-    View to list all users in the system.
-    """
-
-    def get(self, request, format=None):
-        """
-        Return a list of all users.
-        """
-        # usernames = [user.username for user in User.objects.all()]
-        # return Response(usernames)
 
 class ListTourns(APIView):
     """
@@ -170,11 +168,34 @@ class ListTourns(APIView):
         tourns = Tournament.objects.all()
         out = []
         for t in tourns:
-            out.append({
-                "name": t.name,
-                "date": t.date,
-                "weapon": t.weapon,
-                "event_type": t.event_type,
-                "location": t.location
-                })
+            out.append(
+                {
+                    "name": t.name,
+                    "date": t.date,
+                    "weapon": t.weapon,
+                    "event_type": t.event_type,
+                    "location": t.location
+                }
+            )
         return Response(out)
+
+
+class LogEvent(APIView):
+
+    def post(self, request):
+        bout = request.data['bout_id']
+        fencer = request.data['fencer']
+        event = Event(bout=bout, event_type=request.data['event_id'],
+                      fencer=fencer)
+        if event.event_type.event_type == 'touch_scored':
+            if bout.fencer_left == fencer:
+                bout.fencer_left_score = bout.fencer_left_score + 1
+            else:
+                bout.fencer_right_score = bout.fencer_right_score + 1
+
+            bout.save
+            event.fencer_left_score = bout.fencer_left_score
+            event.fencer_right_score = bout.fencer_right_score
+        elif event.event_type.event_type == 'bout_over':
+            bout.completed = True
+        event.save

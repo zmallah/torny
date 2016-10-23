@@ -17,7 +17,7 @@ class Profile(models.Model):
 
 
 class Role(models.Model):
-    role_type = models.CharField(max_length=64)
+    role = models.CharField(max_length=64)
 
 
 class Tournament(models.Model):
@@ -51,5 +51,19 @@ class Bout(models.Model):
                                     related_name='%(class)s_fence_left')
     fencer_right = models.ForeignKey(User, on_delete=models.CASCADE,
                                      related_name='%(class)s_fence_right')
-    fencer_right_score = models.IntegerField()
     fencer_left_score = models.IntegerField()
+    fencer_right_score = models.IntegerField()
+    completed = models.BooleanField(default=False)
+
+
+class Event(models.Model):
+    event_type = models.CharField(max_length=64)
+
+
+class EventLog(models.Model):
+    bout = models.ForeignKey(Bout)
+    event_type = models.ForeignKey(Event)
+    fencer = models.ForeignKey(User, on_delete=models.CASCADE,
+                               related_name='%(class)s_fencer')
+    fencer_left_score = models.IntegerField()
+    fencer_right_score = models.IntegerField()
