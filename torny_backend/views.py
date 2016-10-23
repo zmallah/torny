@@ -160,3 +160,21 @@ class ListUsers(APIView):
         """
         # usernames = [user.username for user in User.objects.all()]
         # return Response(usernames)
+
+class ListTourns(APIView):
+    """
+    List Tournaments
+    """
+
+    def get(self, request):
+        tourns = Tournament.objects.all()
+        out = []
+        for t in tourns:
+            out.append({
+                "name": t.name,
+                "date": t.date,
+                "weapon": t.weapon,
+                "event_type": t.event_type,
+                "location": t.location
+                })
+        return Response(out)
