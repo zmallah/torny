@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from .models import User, Tournament, UserInTournament
+from .models import User, Tournament, UserInTournament, Profile
 from rest_framework.response import Response
 from django.core import serializers
 import json
