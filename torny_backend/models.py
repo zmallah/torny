@@ -22,7 +22,7 @@ class Role(models.Model):
 
 class Tournament(models.Model):
     name = models.CharField(max_length=100)
-    date = models.DateTimeField()
+    date = models.DateField()
     users = models.ManyToManyField(User, through='UserInTournament')
     weapon = models.CharField(max_length=100)
     event_type = models.CharField(max_length=16)
