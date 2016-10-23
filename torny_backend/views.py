@@ -92,10 +92,10 @@ class Tournaments(APIView):
 class RegisterUserInTournament(APIView):
 
     def post(self, request):
-        user_id = request.data['user_id'] or request.user.id
+        user_id = "1"
 
         registration = UserInTournament(
-            tournament=Tournament.objects.get(id=request.data['tournament_id']),
+            tournament=Tournament.objects.get(name=request.data['tournament_id']),
             user=User.objects.get(id=user_id),
             role=Role.objects.get(id=request.data['role']),
             status=True
