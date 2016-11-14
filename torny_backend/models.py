@@ -1,69 +1,114 @@
-from django.db import models
-from django.contrib.auth.models import User
-from django.utils import timezone
+from sqlalchemy import Column, String, Date, Integer, Boolean
+from sqlalchemy import ForeignKey
+from sqlalchemy import create_engine
+from sqlalchemy.orm import relationship
+
+from sqlalchemy.ext.declarative import declarative_base
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(User)
-    username = models.CharField(max_length=64)
-    usfa_id = models.CharField(max_length=64)
-    date_of_birth = models.DateField()
-    foil_rating = models.CharField(max_length=5)
-    saber_rating = models.CharField(max_length=5)
-    epee_rating = models.CharField(max_length=5)
-    foil_director_rating = models.CharField(max_length=5)
-    saber_director_rating = models.CharField(max_length=5)
-    epee_director_rating = models.CharField(max_length=5)
+def get_engine(SQL_URL):
+    return create_engine(SQL_URL, echo=True)
 
 
-class Role(models.Model):
-    role = models.CharField(max_length=64)
+Base = declarative_base()
 
 
-class Tournament(models.Model):
-    name = models.CharField(max_length=100)
-    # date = models.DateField()
-    users = models.ManyToManyField(User, through='UserInTournament')
-    weapon = models.CharField(max_length=100)
-    event_type = models.CharField(max_length=16)
-    location = models.CharField(max_length=100)
+class BoutEventType(Base):
+    __tablename__ = 'bout_event_type'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
 
 
-class UserInTournament(models.Model):
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    role = models.ForeignKey(Role, on_delete=models.CASCADE)
-    status = models.BooleanField()
-    date_registration = models.DateField(default=timezone.now)
+class CompetitionTypes(Base):
+    __tablename__ = 'competition_type'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
 
 
-class Pool(models.Model):
-    fencers = models.ManyToManyField(User,
-                                     related_name='%(class)s_fence_pool')
-    director = models.ManyToManyField(User,
-                                      related_name='%(class)s_dir_pool')
-    tournament = models.ForeignKey(Tournament)
+class User(Base):
+    __tablename__ = 'user'
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String)
+    password = Column(String)
+    usfa_id = Column(String)
+    date_of_birth = Column(Date)
+    foil_rating = Column(String)
+    saber_rating = Column(String)
+    epee_rating = Column(String)
+    foil_director_rating = Column(String)
+    saber_director_rating = Column(String)
+    epee_director_rating = Column(String)
 
 
-class Bout(models.Model):
-    pool = models.ForeignKey(Pool)
-    fencer_left = models.ForeignKey(User, on_delete=models.CASCADE,
-                                    related_name='%(class)s_fence_left')
-    fencer_right = models.ForeignKey(User, on_delete=models.CASCADE,
-                                     related_name='%(class)s_fence_right')
-    fencer_left_score = models.IntegerField()
-    fencer_right_score = models.IntegerField()
-    completed = models.BooleanField(default=False)
+class Role(Base):
+    __tablename__ = 'role'
+
+    id = Column(Integer, primary_key=True)
+    role = Column(String)
 
 
-class Event(models.Model):
-    event_type = models.CharField(max_length=64)
+class Tournament(Base):
+    __tablename__ = 'tournament'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    date = Column(Date)
+    users = relationship('UserInTournament')
+    weapon = Column(String)
+    comp_type = ForeignKey('CompetitionTypes')
+    location = Column(String)
 
 
-class EventLog(models.Model):
-    bout = models.ForeignKey(Bout)
-    event_type = models.ForeignKey(Event)
-    fencer = models.ForeignKey(User, on_delete=models.CASCADE,
-                               related_name='%(class)s_fencer')
-    fencer_left_score = models.IntegerField()
-    fencer_right_score = models.IntegerField()
+class UserInTournament(Base):
+    __tablename__ = 'user_in_tournament'
+
+    id = Column(Integer, primary_key=True)
+    tournament_id = Column(Integer, ForeignKey('tournament.id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
+    role = ForeignKey('Role')
+    status = Column(Boolean)
+    date_registration = Column(Date)
+
+
+class Pool(Base):
+    __tablename__ = 'pool'
+
+    id = Column(Integer, primary_key=True)
+    fencers = relationship('User')
+    director = relationship('User')
+    tournament = ForeignKey('Tournament')
+
+
+class Bout(Base):
+    __tablename__ = 'bout'
+
+    id = Column(Integer, primary_key=True)
+    pool = ForeignKey('Pool')
+    fencer_left = Column(Integer, ForeignKey('user.id'))
+    fencer_right = Column(Integer, ForeignKey('user.id'))
+    fencer_left_score = Column(String)
+    fencer_right_score = Column(String)
+    completed = Column(Boolean)
+
+
+class Event(Base):
+    __tablename__ = 'event'
+
+    id = Column(Integer, primary_key=True)
+    event_type = Column(String)
+
+
+class EventLog(Base):
+    __tablename__ = 'event_log'
+
+    id = Column(Integer, primary_key=True)
+    bout = ForeignKey('Bout')
+    event_type = ForeignKey('Event')
+    fencer = Column(Integer, ForeignKey('user.id'))
+    fencer_left_score = Column(String)
+    fencer_right_score = Column(String)
