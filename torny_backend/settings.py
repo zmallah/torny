@@ -92,7 +92,7 @@ SQL_USER = os.environ.get('SQL_USER', 'root')
 SQL_PASSWORD = os.environ.get('SQL_PASSWORD', 'thisistorny')
 SQL_HOST = os.environ.get('SQL_HOST', 'localhost')
 
-SQL_URL = 'mysql+pymysql://' + SQL_USER + ':'SQL_PASSWORD + '@' + SQL_HOST + '/' + SQL_DB_NAME
+SQL_URL = 'mysql+pymysql://' + SQL_USER + ':' + SQL_PASSWORD + '@' + SQL_HOST +':3306/' + SQL_DB_NAME
 
 DATABASES = {
     'default': {

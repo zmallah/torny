@@ -5,8 +5,10 @@ from sqlalchemy.orm import relationship
 
 from sqlalchemy.ext.declarative import declarative_base
 
+from settings import SQL_URL
 
-def get_engine(SQL_URL):
+
+def get_engine():
     return create_engine(SQL_URL, echo=True)
 
 
@@ -17,51 +19,51 @@ class BoutEventType(Base):
     __tablename__ = 'bout_event_type'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    description = Column(String)
+    name = Column(String(32))
+    description = Column(String(32))
 
 
 class CompetitionTypes(Base):
     __tablename__ = 'competition_type'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    description = Column(String)
+    name = Column(String(32))
+    description = Column(String(32))
 
 
 class User(Base):
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
-    username = Column(String)
-    password = Column(String)
-    usfa_id = Column(String)
+    username = Column(String(32))
+    password = Column(String(32))
+    usfa_id = Column(String(32))
     date_of_birth = Column(Date)
-    foil_rating = Column(String)
-    saber_rating = Column(String)
-    epee_rating = Column(String)
-    foil_director_rating = Column(String)
-    saber_director_rating = Column(String)
-    epee_director_rating = Column(String)
+    foil_rating = Column(String(32))
+    saber_rating = Column(String(32))
+    epee_rating = Column(String(32))
+    foil_director_rating = Column(String(32))
+    saber_director_rating = Column(String(32))
+    epee_director_rating = Column(String(32))
 
 
 class Role(Base):
     __tablename__ = 'role'
 
     id = Column(Integer, primary_key=True)
-    role = Column(String)
+    role = Column(String(32))
 
 
 class Tournament(Base):
     __tablename__ = 'tournament'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String(32))
     date = Column(Date)
     users = relationship('UserInTournament')
-    weapon = Column(String)
+    weapon = Column(String(32))
     comp_type = ForeignKey('CompetitionTypes')
-    location = Column(String)
+    location = Column(String(32))
 
 
 class UserInTournament(Base):
@@ -91,8 +93,8 @@ class Bout(Base):
     pool = ForeignKey('Pool')
     fencer_left = Column(Integer, ForeignKey('user.id'))
     fencer_right = Column(Integer, ForeignKey('user.id'))
-    fencer_left_score = Column(String)
-    fencer_right_score = Column(String)
+    fencer_left_score = Column(String(32))
+    fencer_right_score = Column(String(32))
     completed = Column(Boolean)
 
 
@@ -100,7 +102,7 @@ class Event(Base):
     __tablename__ = 'event'
 
     id = Column(Integer, primary_key=True)
-    event_type = Column(String)
+    event_type = Column(String(32))
 
 
 class EventLog(Base):
@@ -110,5 +112,5 @@ class EventLog(Base):
     bout = ForeignKey('Bout')
     event_type = ForeignKey('Event')
     fencer = Column(Integer, ForeignKey('user.id'))
-    fencer_left_score = Column(String)
-    fencer_right_score = Column(String)
+    fencer_left_score = Column(String(32))
+    fencer_right_score = Column(String(32))
